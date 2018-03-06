@@ -1,0 +1,25 @@
+.userNameDiv{
+	position:absolute;
+	width: 30%;
+	left: 30%;
+	top: 30%;
+	float:left;
+	padding : 1%;
+	border:1px solid black;
+}
+
+.userNameDiv input[type='text']{
+	position:relative;
+	width: 68%;
+	margin: 1%;
+	padding : 2%;
+	font: 25px;
+}
+
+.userNameDiv button{
+	position:relative;
+	width: 20%;
+	margin: 1%;
+	padding : 2%;
+	font: 25px;
+}
