@@ -8,95 +8,22 @@
     <link rel="stylesheet" type="text/css" href="css/chatApp.css">
     
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script>
-
-$(document).ready(function(){
-	var ws;
-	var usrName,wsConnected=false;
-	
-	$("#add").click(function(){
-		usrName=$.trim($("input[type=text]").val());
-		if(usrName!==undefined && usrName!=null && usrName!==null && usrName!=''){
-			if(!wsConnected){
-				createWS();
-			}
-			if(wsConnected){
-				sendMsg('JOIN',"");
-		    }
-		}
-	});
-	
-	$("#stop").click(function(){
-		if((ws!==undefined && ws!=null && ws!==null) && ws.readyState==1){
-			ws.close();
-			console.log("closing websocket: "+ws.readyState);
-		}
-	});
-	
-	
-	$("#send").click(function(){
-		if(usrName!==undefined && usrName!=null && usrName!==null && usrName!=''){
-			sendMsg('CHAT',$("#chat").val());
-		}
-	});
-	function createWS(){
-		 ws = new WebSocket("ws://localhost:8080/basicChatApp");
-		    var count=0;
-		    ws.onopen = function() {
-		        console.log("ws.onopen", ws);
-		        console.log(ws.readyState, "websocketstatus");
-		        wsConnected=true;
-		        sendMsg('JOIN',"");
-		    }
-		 
-		    ws.onerror = function(e) {
-		        console.log("ws.onerror", ws, e);
-		       // updateContainer("An error occured");
-		    }
-		 
-		    ws.onmessage = function(e) {
-		        console.log("ws.onmessage", ws, e);
-		        updateContainer(e.data);
-		    }
-		 
-		    ws.onclose=function(e){
-		    	 console.log("ws.onclose", ws, e);
-		    	 sendMsg('LEAVE',"");
-		    }
-		    $(window).bind("beforeunload", function() { 
-		    	console.log("window closed");
-		    	sendMsg('LEAVE',"");
-		    	ws.close();
-		    });
-		    
-	}	
-	
-	function updateContainer(message) {
-    	var msg  = JSON.parse(message);
-      //  document.querySelector(".container").innerHTML = msg.userName+" "+msg.msgType;
-      if(msg.msgType=='JOIN' || msg.msgType=='LEAVE'){
-    	  $("#status").append("<li>"+msg.userName+" "+msg.msgType+"</li>");  
-      }else{
-    	  $("#chatBox").append("<li>"+msg.userName+" wrote : "+msg.chat+"</li>");
-      }
-       
-    }
-    
-    function sendMsg(type,chat){
-    	var chatMsg = {userName:usrName,msgType:type,chat:chat};
-    	ws.send(JSON.stringify(chatMsg));
-    }
-});
-
-
-   
-</script>    
-    
+<script src="js/chatApp.js"></script>    
 </head>
 <body>
+<h1>Basic Chat App Using Spring Webflux And Websockets</h1>
 <div class ="userNameDiv">
 <input type ="text" placeholder="Enter a name to start Chat"/>
 <button>Enter</button>
+</div>
+<ul id="joined"></ul>
+<ul id="leave"></ul>
+<div id="chatBox">
+<ul id="chatArea"></ul>
+<div class ="chatSendArea">
+<input type ="text" placeholder="Type a message..."/>
+<button>Send</button>
+</div>
 </div>
 </body>
 </html>
