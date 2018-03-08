@@ -8,7 +8,14 @@ public class MessageBean {
 	String userName;
 	String chat;
 	String msgType;
+	Long uniqueId;
 	
+	public Long getUniqueId() {
+		return uniqueId;
+	}
+	public void setUniqueId(Long uniqueId) {
+		this.uniqueId = uniqueId;
+	}
 	public String getUserName() {
 		return userName;
 	}

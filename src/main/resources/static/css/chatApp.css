@@ -1,7 +1,14 @@
 body{
 	    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+	    overflow-x: hidden;
 }
 
+h1{
+	font: 50px Tahoma, Helvetica, Arial, Sans-Serif;
+	text-align: center;
+	color: #222;
+    text-shadow: 0px 2px 3px #555;
+}
 .userNameDiv{
 	position:absolute;
 	width: 30%;
@@ -31,39 +38,42 @@ body{
 #chatBox{
 	position: absolute;
 	width: 50%;
-	margin: -7% 0 0 23%;
+	top: 15%;
+	margin: 0 0 0 20%;
 	height: 80%;
 	border:1px solid #f0f0f0;
 	display:none;
 }
 
-#joined,#leave{
+.joined,.leave{
 	position:absolute;
-	width: 20%;
-	height: 80%;
 	padding: 1%;
+	width: 13%;
 	/* border:1px solid red; */
-	overflow:hidden;
+	height: 2%;
 	list-style-type: none;
-	border: 1px solid black;
-	overflow-y:hidden;
+	overflow-y:overlay;
+	/* left: 99%; */
+	 box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
-#joined{
-	margin: 0 0 1% -22%;
+.joined{
+	 margin: 0 0 1% -22%; 
 }
 
-#leave{
-	margin: 0 0 1% 99%;
+.leave{
+	margin: 0 0 1% 0;
+	left: 100%;
 }
 
-#joined li,#leave li{
-	position:relative;
+.joined li,.leave li{
+	position:absolute;
 	width: 98%;
 	padding: 1%; 
-	height: 44%;
-	border-bottom:1px solid #f0f0f0;
+	left:0;
 	text-align:center;
+	z-index:2;
+	word-wrap:break-word;
 }
 
 #chatArea{

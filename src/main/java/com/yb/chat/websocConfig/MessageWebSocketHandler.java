@@ -13,7 +13,7 @@ import reactor.core.publisher.UnicastProcessor;
 public class MessageWebSocketHandler implements WebSocketHandler{
 
     Gson gson = new Gson();	
-    
+        
     private Flux<String> outputMessages;
     private UnicastProcessor<MessageBean> messagePub;
     
@@ -53,8 +53,10 @@ private static class WebSocketMessageSubscriber {
 	
    public void onNext(MessageBean message) {
       
-   	System.out.println("In on next: "+message.toString()+" "+message.msgType);
+   //	System.out.println("In on next: "+message.toString()+" "+message.msgType);
    	messagePub.onNext(message);
+   	
+   
    }
 
    public void onError(Throwable error) {

@@ -46,6 +46,6 @@ public class ChatAppApplication {
 	
 	@Bean
 	public Flux<MessageBean> messages(UnicastProcessor<MessageBean> messagePublisher){
-		return messagePublisher.replay(30).autoConnect();
+		return messagePublisher.replay(0).autoConnect();
 	}
 }

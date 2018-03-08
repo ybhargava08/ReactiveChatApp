@@ -1,0 +1,19 @@
+button{
+	border-radius: 5px;
+	background-color:#2E9AFE;
+	color:white;
+	font:15px Tahoma, Helvetica, Arial, Sans-Serif;
+	text-align:center;	
+	transition: transform 0.5s ease-in-out;
+	outline:none;
+	border:none;
+}
+
+button:hover{
+	cursor:pointer;
+	background-color:#58ACFA;
+}
+
+button:active{
+	transform: translate(0,6px);
+}
