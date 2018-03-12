@@ -5,13 +5,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.web.reactive.function.BodyInserters;
-import org.springframework.web.reactive.function.server.RequestPredicates;
-import org.springframework.web.reactive.function.server.RouterFunction;
-import org.springframework.web.reactive.function.server.RouterFunctions;
-import org.springframework.web.reactive.function.server.ServerResponse;
-
 import com.yb.chat.websocConfig.MessageBean;
 
 import reactor.core.publisher.Flux;
@@ -31,13 +24,13 @@ public class ChatAppApplication {
 	protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
 		return application.sources(ChatAppApplication.class);
 	}
-	   @Bean
+	   /*@Bean
 	    public RouterFunction<ServerResponse> routes(){
 	        return RouterFunctions.route(
 	                RequestPredicates.GET("/ChatApp"),
 	                request -> ServerResponse.ok().body(BodyInserters.fromResource(new ClassPathResource("static/websoc.html")))
 	        );
-	    }
+	    }*/
 	
 	@Bean
 	public UnicastProcessor<MessageBean> messagePublisher() {

@@ -1,4 +1,6 @@
 ---
+server:
+ port: 8080
 spring: 
  resources:
   static-locations: file:///C:/Users/ybhargava08/spring_cloud/ChatApp/ChatApp/src/main/resources/static/
