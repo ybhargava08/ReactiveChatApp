@@ -1,15 +1,32 @@
 package com.yb.chat.websocConfig;
 
+import java.util.List;
+
 import org.springframework.stereotype.Component;
 
 @Component
 public class MessageBean {
 
-	String userName;
-	String chat;
-	String msgType;
-	Long uniqueId;
+	private String userName;
+	private String chat;
+	private String msgType;
+	private Long uniqueId;
+	private Long chatDate;
+	private List<UserInfoBean> allUsers;
 	
+	public List<UserInfoBean> getAllUsers() {
+		return allUsers;
+	}
+	public void setAllUsers(List<UserInfoBean> allUsers) {
+		this.allUsers = allUsers;
+	}
+	
+	public Long getChatDate() {
+		return chatDate;
+	}
+	public void setChatDate(Long chatDate) {
+		this.chatDate = chatDate;
+	}
 	public Long getUniqueId() {
 		return uniqueId;
 	}

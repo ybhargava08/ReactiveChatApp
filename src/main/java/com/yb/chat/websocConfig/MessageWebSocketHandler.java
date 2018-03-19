@@ -10,7 +10,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.UnicastProcessor;
 
-public class MessageWebSocketHandler implements WebSocketHandler{
+public class MessageWebSocketHandler implements WebSocketHandler {
 
     Gson gson = new Gson();	
         
@@ -21,7 +21,6 @@ public class MessageWebSocketHandler implements WebSocketHandler{
     	this.outputMessages=Flux.from(_outputMessages).map(this::convertBeanToJSON);
     	this.messagePub=_messagePub;
     }
-    
     
 	@Override
 	public Mono<Void> handle(WebSocketSession session) {
@@ -35,12 +34,10 @@ public class MessageWebSocketHandler implements WebSocketHandler{
 	
 	
 private MessageBean convertJSONToBean(String json) {
-	//System.out.println("converting json to bean");
 	return gson.fromJson(json, MessageBean.class);
 }
 
 private String convertBeanToJSON(MessageBean bean) {
-	//System.out.println("converting bean to json");
 	return gson.toJson(bean);
 }
 
@@ -51,12 +48,8 @@ private static class WebSocketMessageSubscriber {
 		 this.messagePub=_messagePub; 
      }
 	
-   public void onNext(MessageBean message) {
-      
-   //	System.out.println("In on next: "+message.toString()+" "+message.msgType);
-   	messagePub.onNext(message);
-   	
-   
+   public void onNext(MessageBean message) { 
+   	 messagePub.onNext(UserCountInfo.updateBeanWithCount(message));
    }
 
    public void onError(Throwable error) {
