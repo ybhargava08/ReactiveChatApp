@@ -1,5 +1,7 @@
 package com.yb.chat.websocConfig;
 
+import java.util.Optional;
+
 import org.springframework.web.reactive.socket.WebSocketHandler;
 import org.springframework.web.reactive.socket.WebSocketMessage;
 import org.springframework.web.reactive.socket.WebSocketSession;
@@ -41,22 +43,32 @@ private String convertBeanToJSON(MessageBean bean) {
 	return gson.toJson(bean);
 }
 
+
+
 private static class WebSocketMessageSubscriber {
 	 private UnicastProcessor<MessageBean> messagePub;
+	 private  Optional<MessageBean> lastMsg = Optional.empty();
 	 
 	 public WebSocketMessageSubscriber(UnicastProcessor<MessageBean> _messagePub) {
 		 this.messagePub=_messagePub; 
      }
 	
    public void onNext(MessageBean message) { 
-   	 messagePub.onNext(UserCountInfo.updateBeanWithCount(message));
+	   lastMsg = Optional.of(message);
+   	 messagePub.onNext(UserStats.updateUserStats(message));
    }
 
    public void onError(Throwable error) {
-       error.printStackTrace();
+	   lastMsg.ifPresent(messagebean -> messagePub.onNext(UserStats.updateUserStats(setMsgType(MsgType.Left,messagebean))));
    }
 
    public void onComplete() {
+	   lastMsg.ifPresent(messagebean -> messagePub.onNext(UserStats.updateUserStats(setMsgType(MsgType.Left,messagebean))));
+   }
+   
+   private MessageBean setMsgType(MsgType type,MessageBean bean) {
+	  bean.setMsgType(type);
+	  return bean;
    }
 }
 }

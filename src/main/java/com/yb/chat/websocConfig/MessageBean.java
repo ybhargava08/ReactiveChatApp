@@ -9,18 +9,19 @@ public class MessageBean {
 
 	private String userName;
 	private String chat;
-	private String msgType;
+	private MsgType msgType;
 	private Long uniqueId;
 	private Long chatDate;
-	private List<UserInfoBean> allUsers;
+	private Long typedTime;
+	private List<UserStatBean> userstats;
+	private String userAvatarColor;
 	
-	public List<UserInfoBean> getAllUsers() {
-		return allUsers;
+	public String getUserAvatarColor() {
+		return userAvatarColor;
 	}
-	public void setAllUsers(List<UserInfoBean> allUsers) {
-		this.allUsers = allUsers;
+	public void setUserAvatarColor(String userAvatarColor) {
+		this.userAvatarColor = userAvatarColor;
 	}
-	
 	public Long getChatDate() {
 		return chatDate;
 	}
@@ -49,11 +50,40 @@ public class MessageBean {
 	public String toString() {
 		return "bean of user: "+this.getUserName();
 	}
-	public String getMsgType() {
+	public MsgType getMsgType() {
 		return msgType;
 	}
-	public void setMsgType(String msgType) {
+	public void setMsgType(MsgType msgType) {
 		this.msgType = msgType;
 	}
+	public Long getTypedTime() {
+		return typedTime;
+	}
+	public void setTypedTime(Long typedTime) {
+		this.typedTime = typedTime;
+	}
+	public List<UserStatBean> getUserstats() {
+		return userstats;
+	}
+	public void setUserstats(List<UserStatBean> userstats) {
+		this.userstats = userstats;
+	}
 	
+}
+
+enum MsgType {
+	Chat("Chat"),
+	Joined("Joined"),
+	Left("Left"),
+	TypedInd("TypedInd");
+	
+	private String value;
+	
+	MsgType(String value) {
+		this.value = value;
+	}
+	
+	public String toString() {
+		return this.value;
+	}
 }
