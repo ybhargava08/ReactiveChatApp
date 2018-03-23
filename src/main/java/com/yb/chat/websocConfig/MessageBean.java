@@ -15,6 +15,7 @@ public class MessageBean {
 	private Long typedTime;
 	private List<UserStatBean> userstats;
 	private String userAvatarColor;
+	private Boolean isChatBot = Boolean.FALSE;
 	
 	public String getUserAvatarColor() {
 		return userAvatarColor;
@@ -47,9 +48,6 @@ public class MessageBean {
 		this.chat = chat;
 	};
 	
-	public String toString() {
-		return "bean of user: "+this.getUserName();
-	}
 	public MsgType getMsgType() {
 		return msgType;
 	}
@@ -68,6 +66,16 @@ public class MessageBean {
 	public void setUserstats(List<UserStatBean> userstats) {
 		this.userstats = userstats;
 	}
+	public Boolean getIsChatBot() {
+		return isChatBot;
+	}
+	public void setIsChatBot(Boolean isChatBot) {
+		this.isChatBot = isChatBot;
+	}
+	
+	public String toString() {
+		return "bean of user: "+this.userName+" "+this.uniqueId+ " "+this.msgType;
+	}
 	
 }
 
@@ -75,7 +83,9 @@ enum MsgType {
 	Chat("Chat"),
 	Joined("Joined"),
 	Left("Left"),
-	TypedInd("TypedInd");
+	TypedInd("TypedInd"),
+	ChatBotJoin("ChatBotJoin"),
+	ChatBotLeave("ChatBotLeave");
 	
 	private String value;
 	

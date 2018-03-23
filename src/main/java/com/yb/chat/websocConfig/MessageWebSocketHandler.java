@@ -56,14 +56,21 @@ private static class WebSocketMessageSubscriber {
    public void onNext(MessageBean message) { 
 	   lastMsg = Optional.of(message);
    	 messagePub.onNext(UserStats.updateUserStats(message));
+     UserStats.sendChatBotWelcomeMsg(message, messagePub);
    }
 
    public void onError(Throwable error) {
-	   lastMsg.ifPresent(messagebean -> messagePub.onNext(UserStats.updateUserStats(setMsgType(MsgType.Left,messagebean))));
+	   lastMsg.ifPresent(messagebean -> {
+		   messagePub.onNext(UserStats.updateUserStats(setMsgType(MsgType.Left,messagebean))); 
+		   UserStats.sendChatBotWelcomeMsg(messagebean, messagePub);
+	   });
    }
 
    public void onComplete() {
-	   lastMsg.ifPresent(messagebean -> messagePub.onNext(UserStats.updateUserStats(setMsgType(MsgType.Left,messagebean))));
+	   lastMsg.ifPresent(messagebean -> {
+		   messagePub.onNext(UserStats.updateUserStats(setMsgType(MsgType.Left,messagebean))); 
+		   UserStats.sendChatBotWelcomeMsg(messagebean, messagePub);
+	   });
    }
    
    private MessageBean setMsgType(MsgType type,MessageBean bean) {

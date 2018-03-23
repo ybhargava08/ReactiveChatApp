@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.concurrent.locks.StampedLock;
 import java.util.stream.Collectors;
 
+import reactor.core.publisher.UnicastProcessor;
+
 public class UserStats {
 
 	private static final StampedLock lock = new StampedLock();
@@ -30,7 +32,6 @@ public class UserStats {
 		try {
 			UserStatBean usb = new UserStatBean(bean.getUserName(),bean.getUniqueId(),bean.getUserAvatarColor());
 			userList.add(usb);
-			System.out.println("after incrementing list: "+userList);
 		}finally {
 			lock.unlockWrite(stamp);
 		}
@@ -39,12 +40,10 @@ public class UserStats {
 	private static void decrementUserList(MessageBean bean) {
 		long stamp = lock.writeLock();
 		long uniqueID = bean.getUniqueId();
-		System.out.println("unique id to remove: "+uniqueID);
 		
 		try {
 			userList = userList.stream().
 					filter(userstatbean -> (uniqueID != userstatbean.getUniqueId())).collect(Collectors.toList());
-			System.out.println("after decrementing list: "+userList);
 		}finally {
 			lock.unlockWrite(stamp);
 		}
@@ -60,11 +59,40 @@ public class UserStats {
 		/*String allUsers = userList.stream().map(msg->msg.getUserName()).collect(Collectors.joining(","));*/
 			//userList = userList.stream().sorted(Comparator.comparing(UserInfoBean::getName)).collect(Collectors.toList());
 		bean.setUserstats(userList);
-		System.out.println("setting list in bean : "+bean.getUserstats());
 		}finally {
 			lock.unlockRead(stamp);
 		}
 		return bean;
 	}
+	
+	public static void sendChatBotWelcomeMsg(MessageBean msgbean,UnicastProcessor<MessageBean> messagePub) {
+		  if(null!=msgbean && msgbean.getUserstats().size() == 1 && (MsgType.Joined == msgbean.getMsgType() 
+				  || MsgType.Left == msgbean.getMsgType())) {
+			  String chatBotMsg = null;
+			  if(MsgType.Joined == msgbean.getMsgType()) {
+				  chatBotMsg = "Welcome "+msgbean.getUserName()+" to Basic Group Chat . "
+					  		+ "Seems you're the one only here . Hangon someone might join shortly";
+			  }else if(MsgType.Left == msgbean.getMsgType()){
+				  chatBotMsg = "Hey "+msgbean.getUserName()+" . "
+					  		+ "Seems like all left . Hangon someone might join shortly";
+			  }
+			  
+			  MessageBean chatbotbean = new MessageBean();
+			  chatbotbean.setUniqueId(System.currentTimeMillis());
+			  chatbotbean.setChatDate(System.currentTimeMillis());
+			  
+			  if(MsgType.Joined == msgbean.getMsgType()) {
+				  chatbotbean.setMsgType(MsgType.ChatBotJoin);
+			  }else if(MsgType.Left == msgbean.getMsgType()){
+				  chatbotbean.setMsgType(MsgType.ChatBotLeave);
+			  }  
+			  chatbotbean.setUserName("ChatBot");
+			  chatbotbean.setUserstats(userList);
+			  chatbotbean.setIsChatBot(Boolean.TRUE);
+			  messagePub.onNext(chatbotbean);
+		  }
+	}
+	
+	
 	
 }
